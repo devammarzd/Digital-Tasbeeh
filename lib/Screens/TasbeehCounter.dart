@@ -84,7 +84,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
                 '$zikrContinue',
                 style: TextStyle(
                   fontSize: 30,
-                  color: Colors.red[700],
+                  color: Colors.yellow[700],
                 )
                 ),
               Text(
