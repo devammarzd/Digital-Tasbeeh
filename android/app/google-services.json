@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "399298375278",
+    "firebase_url": "https://digital-tasbeeh-cc0a3.firebaseio.com",
+    "project_id": "digital-tasbeeh-cc0a3",
+    "storage_bucket": "digital-tasbeeh-cc0a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:399298375278:android:f55bca24c424aaa9fa807f",
+        "android_client_info": {
+          "package_name": "com.example.digital_tasbeeh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "399298375278-hi3t3irmfe7n7ikvsq1rv1dk5hg7hu6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5FhQKbQYVhG_4Z_2NEZaMPZPHn_9RvOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "399298375278-hi3t3irmfe7n7ikvsq1rv1dk5hg7hu6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
