@@ -20,29 +20,42 @@ class _SavedListState extends State<SavedList> {
   // }
 
   Card buildItem(DocumentSnapshot doc) {
-    return Card(
-        child: Column(children: <Widget>[
-      ListTile(
-        title: Text('${doc.data['Zikr']}'),
-        trailing: Text('${doc.data['Count']}'),
+     return Card(
+       
+       color: Colors.teal[100],
+ child: Column(children: <Widget>[
+      ListTile( contentPadding: EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0,),
+        title: Text('${doc.data['Zikr']}', style: TextStyle(fontSize: 25 , fontStyle: FontStyle.italic ),),
+        trailing: Container(
+          color: Colors.transparent,
+          child: Text('${doc.data['Count']}', style: TextStyle(fontSize: 20,),),), 
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          IconButton(
-              icon: Icon(Icons.play_circle_outline),
-              iconSize: 40,
-              color: Colors.green[600],
-              onPressed: () {
+          OutlineButton(onPressed: () {
                 readData(doc);
-              }),
-          IconButton(
-              icon: Icon(Icons.delete_forever),
-              color: Colors.red,
-              iconSize: 40,
-              onPressed: () {
-                deleteData(doc);
-              })
+              },
+               child: Row( children: <Widget>[
+ Text("Resume  ", style: TextStyle( fontSize: 15, fontWeight: FontWeight.w600)),
+ Icon(Icons.play_circle_filled,color: Colors.green[600],),
+               ],
+               ),
+               hoverColor: Colors.teal[300],
+               focusColor: Colors.teal,),
+
+               SizedBox(
+                 width: 10,
+               ),
+
+   OutlineButton(onPressed: () {  deleteData(doc); },
+    child: Row( 
+      children: <Widget>[
+        Text("Delete  ", style: TextStyle( fontSize: 15, fontWeight: FontWeight.w600)),
+        Icon(Icons.delete,color: Colors.red[700],),
+        ], ),
+               hoverColor: Colors.teal[300],
+               focusColor: Colors.teal,),
         ],
       )
     ]));
