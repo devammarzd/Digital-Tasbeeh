@@ -1,3 +1,4 @@
+import 'package:digital_tasbeeh/Login/Login.dart';
 import 'package:digital_tasbeeh/Screens/TasbeehCounter.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: Colors.teal,
+        primaryColor: Colors.indigo,
+        
         // primarySwatch: Colors.indigo,
       ),
       debugShowCheckedModeBanner: false,
@@ -25,6 +27,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return TasbeehScreen(zikrContinue: '',counterContinue: 0,zikrID: '',);
+    // return LoginScreen();
+    return TasbeehScreen(zikrContinue: 'New Zikr',counterContinue: 0,zikrID: '',);
   }
 }

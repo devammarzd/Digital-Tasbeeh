@@ -13,27 +13,33 @@ class CustomButton extends StatelessWidget {
   final void Function() onPressed;
   final Color bgColor;
   final IconData icons;
+  
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-   padding: const EdgeInsets.all(20),
-        child:
-          SizedBox(
-            width: MediaQuery.of(context).size.width/2.8,
-               child: RaisedButton(
-                 color: Colors.white54,
-                 highlightColor: Colors.teal,
-              onPressed: onPressed,
-              child: Row( 
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
- Text(buttontext, style: TextStyle( fontSize: 15, fontWeight: FontWeight.w600)),
- Icon(icons,color: Colors.teal,),
-                 ],
-                 ),
-            ),
-          ), );
+    return RaisedButton(
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(20.0),
+  side: BorderSide(color: Colors.indigo)
+),
+      color: Colors.white,
+      highlightColor: Colors.indigo[200],
+      
+        onPressed: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row( 
+            
+     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+     children: <Widget>[
+ Text(buttontext, style: TextStyle( fontSize: 16, fontWeight: FontWeight.w600,color: Colors.indigo)),
+ SizedBox(width:15 ,),
+ Icon(icons,color: Colors.indigo,),
+      ],
+      ),
+        ),
+      );
 
  }
     

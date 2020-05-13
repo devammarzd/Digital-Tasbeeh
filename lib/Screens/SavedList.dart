@@ -20,45 +20,98 @@ class _SavedListState extends State<SavedList> {
   // }
 
   Card buildItem(DocumentSnapshot doc) {
-     return Card(
-       
-       color: Colors.teal[100],
- child: Column(children: <Widget>[
-      ListTile( contentPadding: EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0,),
-        title: Text('${doc.data['Zikr']}', style: TextStyle(fontSize: 25 , fontStyle: FontStyle.italic ),),
-        trailing: Container(
-          color: Colors.transparent,
-          child: Text('${doc.data['Count']}', style: TextStyle(fontSize: 20,),),), 
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          OutlineButton(onPressed: () {
-                readData(doc);
-              },
-               child: Row( children: <Widget>[
- Text("Resume  ", style: TextStyle( fontSize: 15, fontWeight: FontWeight.w600)),
- Icon(Icons.play_circle_filled,color: Colors.green[600],),
-               ],
-               ),
-               hoverColor: Colors.teal[300],
-               focusColor: Colors.teal,),
-
-               SizedBox(
-                 width: 10,
-               ),
-
-   OutlineButton(onPressed: () {  deleteData(doc); },
-    child: Row( 
-      children: <Widget>[
-        Text("Delete  ", style: TextStyle( fontSize: 15, fontWeight: FontWeight.w600)),
-        Icon(Icons.delete,color: Colors.red[700],),
-        ], ),
-               hoverColor: Colors.teal[300],
-               focusColor: Colors.teal,),
-        ],
-      )
-    ]));
+    return Card(
+      shape: RoundedRectangleBorder(
+  borderRadius: BorderRadius.circular(15.0),
+  side: BorderSide(color: Colors.indigo)
+),
+      
+        color: Colors.white,
+        child: Column(children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.only(
+              top: 8.0,
+              left: 12.0,
+              right: 12.0,
+            ),
+            title: Text(
+              '${doc.data['Zikr']}',
+              style: TextStyle(
+                  fontSize: 25,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w600),
+            ),
+            trailing: Container(
+              color: Colors.transparent,
+              child: Text(
+                '${doc.data['Count']}',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0, right: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                OutlineButton(
+                  borderSide: BorderSide(
+                    color: Colors.green[300],
+                    width: 2.0,
+                  ),
+                  onPressed: () {
+                    readData(doc);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Continue  ",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600)),
+                      Icon(
+                        Icons.play_circle_filled,
+                        color: Colors.green[600],
+                      ),
+                    ],
+                  ),
+                  textColor: Colors.green[800],
+                  highlightColor: Colors.green[100],
+                  highlightedBorderColor: Colors.green[500],
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                OutlineButton(
+                  borderSide: BorderSide(
+                    color: Colors.red[300],
+                    width: 2.0,
+                  ),
+                  onPressed: () {
+                    deleteData(doc);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Delete  ",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600)),
+                      // SizedBox(
+                      //   width: 10,
+                      // ),
+                      Icon(
+                        Icons.delete,
+                        color: Colors.red[700],
+                      ),
+                    ],
+                  ),
+                  textColor: Colors.red[800],
+                  highlightColor: Colors.red[100],
+                  highlightedBorderColor: Colors.red[500],
+                )
+              ],
+            ),
+          )
+        ]));
   }
 
   void deleteData(DocumentSnapshot doc) async {
@@ -71,16 +124,14 @@ class _SavedListState extends State<SavedList> {
     setState(() {
       zikrContinue = snapshot.data['Zikr'];
       counterContinue = int.parse(snapshot.data['Count']);
-      id=doc.documentID;
+      id = doc.documentID;
     });
     print(zikrContinue);
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-
         builder: (context) => TasbeehScreen(
-              zikrContinue: zikrContinue,
-              counterContinue: counterContinue,
-              zikrID:id
-            )));
+            zikrContinue: zikrContinue,
+            counterContinue: counterContinue,
+            zikrID: id)));
   }
 
   @override
@@ -88,22 +139,25 @@ class _SavedListState extends State<SavedList> {
     return CustomScaffold(
       indexofscreen: 2,
       appbarTitle: 'My Saved Zikrs',
-      body: Container(
-        child: StreamBuilder<QuerySnapshot>(
-            stream: db.collection('Dummy').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                                  child: Column(
-                      children: snapshot.data.documents
-                          .map((doc) => buildItem(doc))
-                          .toList()),
-                );
-              } else {
-                return SizedBox();
-              }
-            }),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: StreamBuilder<QuerySnapshot>(
+              stream: db.collection('Dummy').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                        children: snapshot.data.documents
+                            .map((doc) => buildItem(doc))
+                            .toList()),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              }),
+        ),
       ),
     );
   }
