@@ -38,13 +38,13 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
       counterContinue = 0;
     });
   }
-void _decrementCounter() {
-  if (counterContinue>0)
-   return setState(() {
-      counterContinue--;
-    });
-  }
 
+  void _decrementCounter() {
+    if (counterContinue > 0)
+      return setState(() {
+        counterContinue--;
+      });
+  }
 
   void save(BuildContext contextforSnackbar) async {
     if (_formKey.currentState.validate()) {
@@ -58,7 +58,8 @@ void _decrementCounter() {
           counterContinue = 0;
         });
         MySnackbars().saveSnackbar();
-        Scaffold.of(contextforSnackbar).showSnackBar( MySnackbars().saveSnackbar());
+        Scaffold.of(contextforSnackbar)
+            .showSnackBar(MySnackbars().saveSnackbar());
       });
 
       id = ref.documentID;
@@ -71,12 +72,11 @@ void _decrementCounter() {
     await db
         .collection('Dummy')
         .document(zikrID)
-        .updateData({'Count': '$counterContinue'}).whenComplete(
-          (){
- MySnackbars().updateSnackbar();
-        Scaffold.of(contextforSnackbar).showSnackBar( MySnackbars().updateSnackbar());
-          }
-        );
+        .updateData({'Count': '$counterContinue'}).whenComplete(() {
+      MySnackbars().updateSnackbar();
+      Scaffold.of(contextforSnackbar)
+          .showSnackBar(MySnackbars().updateSnackbar());
+    });
     print('updated to ' + zikrID);
   }
 
@@ -86,98 +86,129 @@ void _decrementCounter() {
         indexofscreen: 1,
         appbarTitle: 'Digital Tasbeeh',
         body: Builder(builder: (context) {
-          return ListView(
-            scrollDirection: Axis.vertical,
-      children:<Widget>[
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                //SAVED ZIKAR BUTTON
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: <Widget>[
+                   
+                //   ],
+                // ),
 
-        //SAVED ZIKAR BUTTON
-        Padding(
-        padding: EdgeInsets.only(top: 6, left: 150),
-        child:
-        CustomButton(
-          bgColor: Colors.grey,
-          buttontext: 'view saved zikr',
-          icons:Icons.view_headline,
-          onPressed:  () { 
-       Navigator.pushReplacement(context,
-       MaterialPageRoute(builder: (context) => SavedList())); },
-        ),
-        ),
+                SizedBox(
+                  height: 30,
+                  width: MediaQuery.of(context).size.width,
+                ),
 
-              SizedBox(
-                height: 70,
-                width: MediaQuery.of(context).size.width,
-              ),
+                Center(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          '$zikrContinue',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.green[900],
+                          ),
+                        ),
+                      ),
 
-              Center(
-                child: Text(
-                  '$zikrContinue',
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.black, 
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.indigo[900],
+                              width: 2.0,
+                            )),
+                        alignment: Alignment.center,
+                        height: 80.0,
+                        width: 150,
+                        child: Text(
+                          '$counterContinue',
+                          style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.green[900],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Container(
+                        width: 100,
+                        height: 100.0,
+                        child: new RawMaterialButton(
+                          fillColor: Colors.green[900],
+                          shape: new CircleBorder(),
+                          elevation: 15.0,
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 80,
+                          ),
+                          onPressed: () {
+                            _incrementCounter();
+                          },
+                        ),
+                      ),
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                      ),
+
+//RESET BUTTON
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          CustomButton(
+                            buttontext: 'RESET',
+                            icons: Icons.refresh,
+                            onPressed: () {
+                              createConfirmDialogue(context);
+                            },
+                          ),
+
+//SAVE BUTTON
+                          buildSaveButton(
+                              context), //context is passed for building a snackbar only
+                        ],
+                      ),
+                      SizedBox(height: 20,),
+                       Padding(
+                         padding: const EdgeInsets.fromLTRB(20, 00, 20, 00),
+                         child: CustomButton(
+                      bgColor: Colors.grey,
+                      buttontext: 'VIEW SAVED ZIKRS',
+                      icons: Icons.view_headline,
+                      onPressed: () {
+                          Navigator.pushReplacement(context,
+                              MaterialPageRoute(builder: (context) => SavedList()));
+                      },
+                    ),
+                       ),
+                    ],
                   ),
                 ),
-              ),
-              
-
-             
-       Column(
-       mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[ 
-
- Center(
-             child: Container(
-               alignment: Alignment.center,
-               color: Colors.transparent,
-               height: 60.0,
-               width: 120,
-               child: Text(
-               '$counterContinue',
-              style: TextStyle(
-                 fontSize: 50,
-                 color: Colors.teal,
-                  ),),
-             ),
-           ),
-           SizedBox(height: 20,),
- CircleAvatar(
-   maxRadius: 60,
-
-   backgroundColor: Colors.teal,
-   child: IconButton(icon: Icon(Icons.add), 
-
-   iconSize: 70,
-   onPressed: _incrementCounter),
- ),
-
-                 ],),
-
-    SizedBox(width: MediaQuery.of(context).size.width, height: 50,),
-             
-              
-//RESET BUTTON
- Row(
-   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-   children: <Widget>[
-     CustomButton(buttontext: 'RESET',
-        icons: Icons.refresh,
-        onPressed: () {
-        createConfirmDialogue(context); },),
-  
-
-
-//SAVE BUTTON 
- buildSaveButton(context), //context is passed for building a snackbar only
-  ],
- ),
-
-
- ],
+              ],
+            ),
           );
         }));
   }
+
 //to create a save dialog box
-createSaveDialogue(BuildContext contextforSnackbar) {
+  createSaveDialogue(BuildContext contextforSnackbar) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -200,7 +231,7 @@ createSaveDialogue(BuildContext contextforSnackbar) {
                 },
               ),
               actions: <Widget>[
-               FlatButton(
+                FlatButton(
                   onPressed: () {
                     save(contextforSnackbar);
                     //A Scaffold context is passed in save() so that we can use the scaffold context for snakbar display
@@ -223,14 +254,14 @@ createSaveDialogue(BuildContext contextforSnackbar) {
         });
   }
 
-  createConfirmDialogue(BuildContext context) {//a confirmation dialogue to pop up when the user resets the counter
+  createConfirmDialogue(BuildContext context) {
+    //a confirmation dialogue to pop up when the user resets the counter
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('Reset the counter'),
-            content:
-                Text('Are you sure you want to reset the counter to 0?'),
+            content: Text('Are you sure you want to reset the counter to 0?'),
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
@@ -252,16 +283,20 @@ createSaveDialogue(BuildContext contextforSnackbar) {
 
   CustomButton buildSaveButton(BuildContext contextforSnackbar) {
     if (zikrID == '') {
-      return CustomButton(buttontext: 'SAVE ZIKR',
-      icons: Icons.save,
-      onPressed: () {createSaveDialogue(contextforSnackbar); }, );
-    } 
-  else {
-      return CustomButton(buttontext: 'SAVE AGAIN',
-      icons: Icons.save,
+      return CustomButton(
+        buttontext: 'SAVE ZIKR',
+        icons: Icons.save,
         onPressed: () {
-          saveagain(contextforSnackbar);}
-          );
+          createSaveDialogue(contextforSnackbar);
+        },
+      );
+    } else {
+      return CustomButton(
+          buttontext: 'SAVE AGAIN',
+          icons: Icons.save,
+          onPressed: () {
+            saveagain(contextforSnackbar);
+          });
     }
   }
 }
