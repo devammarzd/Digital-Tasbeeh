@@ -5,6 +5,7 @@ import 'package:digital_tasbeeh/Wrapper.dart';
 import '../Services/auth.dart';
 import '../Services/auth.dart';
 import '../main.dart';
+import 'package:digital_tasbeeh/Screens/Profile.dart';
 
 class CustomScaffold extends StatelessWidget {
    final AuthService _auth = AuthService();
@@ -21,16 +22,17 @@ class CustomScaffold extends StatelessWidget {
        choiceAction(String choice) async{
        
     if(choice==MyMenu.profile){
-    
-    await _auth.gsignOut().whenComplete(() {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => Wrapper(
-          )));
-    });
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ProfileScreen()));
+    // await _auth.gsignOut().whenComplete(() {
+    //   Navigator.of(context).push(MaterialPageRoute(
+    //     builder: (context) => ProfileScreen()));
+    // });
     
     }
   }
-    return Scaffold(
+  if(indexofscreen==1||indexofscreen== 2){
+return Scaffold(
       backgroundColor: Colors.indigo[50],
       appBar: AppBar(
         centerTitle: true,
@@ -44,7 +46,8 @@ Navigator.pushReplacement(context,
                   
                 })
             : null,
-            actions:indexofscreen !=0 ? <Widget>[
+            
+            actions: <Widget>[
               PopupMenuButton<String>(
 
                 onSelected: choiceAction,
@@ -56,11 +59,27 @@ Navigator.pushReplacement(context,
                     );
                   }).toList();
                 })
-            ]:null
+            ]
       ),
       body: body,
       
     );
+  }
+  else{
+    return Scaffold(
+      backgroundColor: Colors.indigo[50],
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(appbarTitle),
+       
+            
+           
+      ),
+      body: body,
+      
+    );
+  }
+   
   }
   navigate(){
 
