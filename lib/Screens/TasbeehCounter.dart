@@ -2,8 +2,12 @@ import 'package:digital_tasbeeh/CustomWidgets/custombutton.dart';
 import 'package:digital_tasbeeh/Extra/MySnackbars.dart';
 import 'package:digital_tasbeeh/Screens/SavedList.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digital_tasbeeh/CustomWidgets/CustomScaffold.dart';
+import 'package:provider/provider.dart';
+
+import '../Services/User.dart';
 
 class TasbeehScreen extends StatefulWidget {
   String zikrContinue;
@@ -26,6 +30,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
   String id;
   final db = Firestore.instance;
   final _formKey = GlobalKey<FormState>();
+  
 
   void _incrementCounter() {
     setState(() {
@@ -46,11 +51,11 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
       });
   }
 
-  void save(BuildContext contextforSnackbar) async {
+  void save(BuildContext contextforSnackbar,String name) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       DocumentReference ref = await db
-          .collection('Dummy')
+          .collection(name)
           .add({'Zikr': '$zikr', 'Count': '$counterContinue'}).whenComplete(() {
         setState(() {
           zikrSaved = true;
@@ -68,9 +73,9 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
     }
   }
 
-  void saveagain(BuildContext contextforSnackbar) async {
+  void saveagain(BuildContext contextforSnackbar,String name) async {
     await db
-        .collection('Dummy')
+        .collection(name)
         .document(zikrID)
         .updateData({'Count': '$counterContinue'}).whenComplete(() {
       MySnackbars().updateSnackbar();
@@ -82,6 +87,10 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+    if(user!=null){
+    
+    
     return CustomScaffold(
         indexofscreen: 1,
         appbarTitle: 'Digital Tasbeeh',
@@ -145,11 +154,15 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
                       SizedBox(
                         height: 50,
                       ),
+ //Increament Button
                       Container(
                         width: 100,
                         height: 100.0,
                         child: new RawMaterialButton(
                           fillColor: Colors.green[900],
+                          highlightColor: Colors.green[200],
+                          // focusColor: Colors.green[700],
+                          splashColor: Colors.green[300],
                           shape: new CircleBorder(),
                           elevation: 15.0,
                           child: Icon(
@@ -159,6 +172,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
                           ),
                           onPressed: () {
                             _incrementCounter();
+                            HapticFeedback.lightImpact();
                           },
                         ),
                       ),
@@ -182,7 +196,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
 
 //SAVE BUTTON
                           buildSaveButton(
-                              context), //context is passed for building a snackbar only
+                              context,user.name), //context is passed for building a snackbar only
                         ],
                       ),
                       SizedBox(height: 20,),
@@ -205,10 +219,12 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
             ),
           );
         }));
+    
   }
-
+}
+  
 //to create a save dialog box
-  createSaveDialogue(BuildContext contextforSnackbar) {
+  createSaveDialogue(BuildContext contextforSnackbar,String name) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -233,7 +249,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
               actions: <Widget>[
                 FlatButton(
                   onPressed: () {
-                    save(contextforSnackbar);
+                    save(contextforSnackbar, name);
                     //A Scaffold context is passed in save() so that we can use the scaffold context for snakbar display
                     //the context has got nothing to do with saving of item.
                   },
@@ -281,13 +297,13 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
         });
   }
 
-  CustomButton buildSaveButton(BuildContext contextforSnackbar) {
+  CustomButton buildSaveButton(BuildContext contextforSnackbar,String name) {
     if (zikrID == '') {
       return CustomButton(
         buttontext: 'SAVE ZIKR',
         icons: Icons.save,
         onPressed: () {
-          createSaveDialogue(contextforSnackbar);
+          createSaveDialogue(contextforSnackbar,name);
         },
       );
     } else {
@@ -295,7 +311,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
           buttontext: 'SAVE AGAIN',
           icons: Icons.save,
           onPressed: () {
-            saveagain(contextforSnackbar);
+            saveagain(contextforSnackbar,name);
           });
     }
   }
