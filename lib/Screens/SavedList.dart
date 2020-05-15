@@ -123,13 +123,13 @@ class _SavedListState extends State<SavedList> {
         ]));
   }
 
-  void deleteData(DocumentSnapshot doc,String name) async {
-    await db.collection(name).document(doc.documentID).delete();
+  void deleteData(DocumentSnapshot doc,String email) async {
+    await db.collection(email).document(doc.documentID).delete();
   }
 
-  void readData(DocumentSnapshot doc,String name) async {
+  void readData(DocumentSnapshot doc,String email) async {
     DocumentSnapshot snapshot =
-        await db.collection(name).document(doc.documentID).get();
+        await db.collection(email).document(doc.documentID).get();
     setState(() {
       zikrContinue = snapshot.data['Zikr'];
       counterContinue = int.parse(snapshot.data['Count']);
@@ -157,14 +157,14 @@ class _SavedListState extends State<SavedList> {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
-              stream: db.collection(user.name).snapshots(),
+              stream: db.collection(user.email).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
                         children: snapshot.data.documents
-                            .map((doc) => buildItem(doc, user.name))
+                            .map((doc) => buildItem(doc, user.email))
                             .toList()),
                   );
                 } else {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MySnackbars {
   SnackBar saveSnackbar() {
     return SnackBar(
+      duration: Duration(milliseconds: 2500),
       content: Row(
         children: <Widget>[
           Text(
@@ -23,6 +24,7 @@ class MySnackbars {
 
   SnackBar updateSnackbar() {
     return SnackBar(
+      duration: Duration(milliseconds: 2500),
       content: Row(
         children: <Widget>[
           Text(
