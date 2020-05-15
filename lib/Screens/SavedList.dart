@@ -2,13 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:digital_tasbeeh/CustomWidgets/CustomScaffold.dart';
 import 'package:digital_tasbeeh/Screens/TasbeehCounter.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../Services/User.dart';
 
 class SavedList extends StatefulWidget {
+ 
+  
   @override
   _SavedListState createState() => _SavedListState();
 }
 
 class _SavedListState extends State<SavedList> {
+   void ammar(){
+    print('');
+    // Navigator.of(context).
+   }
   final db = Firestore.instance;
   String zikrContinue;
   int counterContinue;
@@ -19,7 +28,7 @@ class _SavedListState extends State<SavedList> {
   //   return qn.documents;
   // }
 
-  Card buildItem(DocumentSnapshot doc) {
+  Card buildItem(DocumentSnapshot doc,String name) {
     return Card(
       shape: RoundedRectangleBorder(
   borderRadius: BorderRadius.circular(15.0),
@@ -60,7 +69,7 @@ class _SavedListState extends State<SavedList> {
                     width: 2.0,
                   ),
                   onPressed: () {
-                    readData(doc);
+                    readData(doc,name);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,7 +96,7 @@ class _SavedListState extends State<SavedList> {
                     width: 2.0,
                   ),
                   onPressed: () {
-                    deleteData(doc);
+                    deleteData(doc,name);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,13 +123,13 @@ class _SavedListState extends State<SavedList> {
         ]));
   }
 
-  void deleteData(DocumentSnapshot doc) async {
-    await db.collection('Dummy').document(doc.documentID).delete();
+  void deleteData(DocumentSnapshot doc,String name) async {
+    await db.collection(name).document(doc.documentID).delete();
   }
 
-  void readData(DocumentSnapshot doc) async {
+  void readData(DocumentSnapshot doc,String name) async {
     DocumentSnapshot snapshot =
-        await db.collection('Dummy').document(doc.documentID).get();
+        await db.collection(name).document(doc.documentID).get();
     setState(() {
       zikrContinue = snapshot.data['Zikr'];
       counterContinue = int.parse(snapshot.data['Count']);
@@ -136,21 +145,26 @@ class _SavedListState extends State<SavedList> {
 
   @override
   Widget build(BuildContext context) {
+      final user = Provider.of<User>(context);
+      if(user!=null){
+        
+      
     return CustomScaffold(
       indexofscreen: 2,
       appbarTitle: 'My Saved Zikrs',
-      body: Padding(
+      body:
+       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           child: StreamBuilder<QuerySnapshot>(
-              stream: db.collection('Dummy').snapshots(),
+              stream: db.collection(user.name).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
                         children: snapshot.data.documents
-                            .map((doc) => buildItem(doc))
+                            .map((doc) => buildItem(doc, user.name))
                             .toList()),
                   );
                 } else {
@@ -160,5 +174,16 @@ class _SavedListState extends State<SavedList> {
         ),
       ),
     );
+      }
+      else {
+        return CustomScaffold(
+          appbarTitle: 'My Saved Zikrs',
+          indexofscreen: 2,
+          body: Center(child: 
+          Container(child: Text('Loading...')
+          ),
+          ),
+        );
+      }
   }
 }
