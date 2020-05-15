@@ -51,11 +51,11 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
       });
   }
 
-  void save(BuildContext contextforSnackbar,String name) async {
+  void save(BuildContext contextforSnackbar,String email) async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       DocumentReference ref = await db
-          .collection(name)
+          .collection(email)
           .add({'Zikr': '$zikr', 'Count': '$counterContinue'}).whenComplete(() {
         setState(() {
           zikrSaved = true;
@@ -73,9 +73,9 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
     }
   }
 
-  void saveagain(BuildContext contextforSnackbar,String name) async {
+  void saveagain(BuildContext contextforSnackbar,String email) async {
     await db
-        .collection(name)
+        .collection(email)
         .document(zikrID)
         .updateData({'Count': '$counterContinue'}).whenComplete(() {
       MySnackbars().updateSnackbar();
@@ -196,7 +196,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
 
 //SAVE BUTTON
                           buildSaveButton(
-                              context,user.name), //context is passed for building a snackbar only
+                              context,user.email), //context is passed for building a snackbar only
                         ],
                       ),
                       SizedBox(height: 20,),
@@ -224,7 +224,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
 }
   
 //to create a save dialog box
-  createSaveDialogue(BuildContext contextforSnackbar,String name) {
+  createSaveDialogue(BuildContext contextforSnackbar,String email) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -249,7 +249,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
               actions: <Widget>[
                 FlatButton(
                   onPressed: () {
-                    save(contextforSnackbar, name);
+                    save(contextforSnackbar, email);
                     //A Scaffold context is passed in save() so that we can use the scaffold context for snakbar display
                     //the context has got nothing to do with saving of item.
                   },
@@ -297,13 +297,13 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
         });
   }
 
-  CustomButton buildSaveButton(BuildContext contextforSnackbar,String name) {
+  CustomButton buildSaveButton(BuildContext contextforSnackbar,String email) {
     if (zikrID == '') {
       return CustomButton(
         buttontext: 'SAVE ZIKR',
         icons: Icons.save,
         onPressed: () {
-          createSaveDialogue(contextforSnackbar,name);
+          createSaveDialogue(contextforSnackbar,email);
         },
       );
     } else {
@@ -311,7 +311,7 @@ class _TasbeehScreenState extends State<TasbeehScreen> {
           buttontext: 'SAVE AGAIN',
           icons: Icons.save,
           onPressed: () {
-            saveagain(contextforSnackbar,name);
+            saveagain(contextforSnackbar,email);
           });
     }
   }

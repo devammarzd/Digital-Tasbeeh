@@ -27,11 +27,20 @@ dependencies:
   google_sign_in: ^4.4.4
   firebase_auth: ^0.15.5+3
   provider: ^4.0.5
+  flutter_launcher_icons: ^0.7.5
+  flutter_launcher_name: ^0.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/launchericon.png"
+
+flutter_launcher_name:
+  name: "DigiTasbeeh"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -46,6 +55,7 @@ flutter:
 
 assets:
 - images\background.jpg
+- images\launchericon.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
